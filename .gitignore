@@ -1,0 +1,4 @@
+*.py[cod]
+webdrone_output
+tmp
+.ipynb_checkpoints
