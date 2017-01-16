@@ -2,5 +2,7 @@
 
 ### Oil market is rigged
 
-- [Oil market](http://nbviewer.jupyter.org/github/collabmarket/data_oil/blob/master/index.ipynb)
+[![Binder](http://mybinder.org/badge.svg)](http://mybinder.org:/repo/collabmarket/data_oil)
+
+- [View Oil market Notebook](http://nbviewer.jupyter.org/github/collabmarket/data_oil/blob/master/index.ipynb)
 
