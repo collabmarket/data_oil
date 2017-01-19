@@ -12,9 +12,10 @@ def file_exist(filename):
 
 def csv_is_update(serie):
     csv_kargs = dict(index_col='Date', parse_dates=True)
-    lq = Quandl.get(serie['code'], row=0).tail(1).to_json()
+    #~ Bugs from Quandl.get (row=0 give all data) (row=1 some cases give empty df)
+    lq = Quandl.get(serie['code'], row=1).to_json()
     if file_exist(serie['filename']):
-        lf = pd.read_csv(serie['filename'], **csv_kargs).tail(1).to_json()
+        lf = pd.read_csv(serie['filename'], **csv_kargs).ix[[-2]].to_json()
     else:
         lf = 'Not exist'
     return lq == lf
