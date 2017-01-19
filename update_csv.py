@@ -10,23 +10,27 @@ with open('data.yml') as fp:
 def file_exist(filename):
     return os.path.exists(filename)
 
-def csv_is_update(d):
-    csv_args = dict(index_col='Date', parse_dates=True)
-    lq = Quandl.get(d['code'], row=0).tail(1).to_json()
-    if file_exist(d['filename']):
-        lf = pd.read_csv(d['filename'], **csv_args).tail(1).to_json()
+def csv_is_update(serie):
+    csv_kargs = dict(index_col='Date', parse_dates=True)
+    lq = Quandl.get(serie['code'], row=0).tail(1).to_json()
+    if file_exist(serie['filename']):
+        lf = pd.read_csv(serie['filename'], **csv_kargs).tail(1).to_json()
     else:
         lf = 'Not exist'
     return lq == lf
 
-def csv_update(d):
-    df = Quandl.get(d['code'])
-    df.to_csv(d['filename'])
+def csv_update(serie):
+    df = Quandl.get(serie['code'])
+    df.to_csv(serie['filename'])
 
-for p in meta['eia'].keys():
-    for d in meta['eia'][p]:
-        if not csv_is_update(d):
-            csv_update(d)
-            time.sleep(5) # delays for 5 seconds
-            print d['varname'],'(Updated)'
-
+if __name__ == '__main__':
+    print 'Start check for updates!'
+    for period in meta['eia'].keys():
+        for serie in meta['eia'][period]:
+            if not csv_is_update(serie):
+                csv_update(serie)
+                # Delays for 5 seconds, prevent blocking from Quandl
+                time.sleep(5)
+                print serie['varname'],'(Updated)'
+        print 'Check %s done.' % period
+    print 'Finished!'
